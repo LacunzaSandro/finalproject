@@ -1,4 +1,4 @@
-package com.informatorio.finalproject.utils.exception;
+package com.informatorio.finalproject.exception;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,19 +39,20 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler
         ErrorResponse error = new ErrorResponse("Email duplicate", details);
         return new ResponseEntity(error, HttpStatus.CONFLICT);
     }
-    @ExceptionHandler(InvalidFormatException.class)
-    public final ResponseEntity<Object> handleInvalidFormat(InvalidFormatException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
-        ErrorResponse errorDetails = new ErrorResponse( "hello", Arrays.asList(request.getDescription(true)));
-        errorDetails.setMessage("Testing message");
-        return new ResponseEntity<>("errorDetails",HttpStatus.NOT_ACCEPTABLE);
 
-    }
     @ExceptionHandler(RecordNotFoundException.class)
     public final ResponseEntity<Object> handleUserNotFoundException(RecordNotFoundException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("Record Not Found", details);
         return new ResponseEntity(error, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(SimpleException.class)
+    public final ResponseEntity<Object> handleSimpleError(SimpleException ex, WebRequest request) {
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse("Error", details);
+        return new ResponseEntity(error, HttpStatus.CONFLICT);
     }
 
     @Override

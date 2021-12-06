@@ -3,11 +3,13 @@ package com.informatorio.finalproject.service;
 import com.informatorio.finalproject.entity.User;
 import com.informatorio.finalproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,6 +35,11 @@ public class UserServiceImplementation implements UserService {
     @Transactional(readOnly = true)
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public List<User> findAll(Example<User> user) {
+        return userRepository.findAll(user);
     }
 
     @Override

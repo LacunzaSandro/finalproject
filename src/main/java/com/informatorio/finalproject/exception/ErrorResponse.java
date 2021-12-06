@@ -1,4 +1,4 @@
-package com.informatorio.finalproject.utils.exception;
+package com.informatorio.finalproject.exception;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;

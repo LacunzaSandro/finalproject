@@ -1,4 +1,4 @@
-package com.informatorio.finalproject.utils.exception;
+package com.informatorio.finalproject.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

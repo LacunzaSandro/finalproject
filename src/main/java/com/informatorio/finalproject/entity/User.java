@@ -147,7 +147,7 @@ public class User  {
     public void setEmprendimientos(List<Emprendimiento> emprendimientos) {
         this.emprendimientos = emprendimientos;
     }
-    public void agregarEmprendimiento(Emprendimiento emprendimiento){
+    public void addEmprendimiento(Emprendimiento emprendimiento){
         this.emprendimientos.add(emprendimiento);
         emprendimiento.setOwner(this);
     }

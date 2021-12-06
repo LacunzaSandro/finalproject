@@ -1,18 +1,17 @@
 package com.informatorio.finalproject.controller;
 
+import com.informatorio.finalproject.entity.Emprendimiento;
 import com.informatorio.finalproject.entity.User;
-import com.informatorio.finalproject.entity.UserEnum;
-import com.informatorio.finalproject.utils.exception.EmailValidationException;
-import com.informatorio.finalproject.utils.exception.RecordNotFoundException;
-import com.informatorio.finalproject.repository.UserRepository;
+import com.informatorio.finalproject.exception.EmailValidationException;
+import com.informatorio.finalproject.exception.RecordNotFoundException;
 import com.informatorio.finalproject.service.UserService;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.apache.commons.lang3.EnumUtils;
 
 
 import javax.validation.Valid;
@@ -71,6 +70,10 @@ public class UserController {
                 .stream(userService.findAll().spliterator(),false)
                 .collect(Collectors.toList());
         return userList;
+    }
+    @GetMapping("/user/matching")
+    public List<User> getMatchingUsers(@RequestBody User user) {
+        return userService.findAll(Example.of(user));
     }
 
 }

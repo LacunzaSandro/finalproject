@@ -8,8 +8,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
+@Table(name="emprendimientos")
 public class Emprendimiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +31,16 @@ public class Emprendimiento {
     private Long target;
     private boolean published;
     private String snapshot;
-    private String tag;
+    @JoinTable(
+            name = "emprendimiento_tag",
+            joinColumns = @JoinColumn(name = "FK_EMPRENDIMIENTO", nullable = false),
+            inverseJoinColumns = @JoinColumn(name="FK_TAG", nullable = false)
+    )
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    }, fetch = FetchType.EAGER)
+    private List<Tag> tags = new ArrayList<>();
     @NotNull(message = "active must not be empty")
     private boolean active;
     @JsonIgnore
@@ -104,13 +118,7 @@ public class Emprendimiento {
         this.snapshot = snapshot;
     }
 
-    public String getTag() {
-        return tag;
-    }
 
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
 
     public boolean isActive() {
         return active;
@@ -126,5 +134,18 @@ public class Emprendimiento {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+    public void addTags(Tag tag) {
+        tags.add(tag);
+        tag.getEmprendimientos().add(this);
     }
 }
