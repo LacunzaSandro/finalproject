@@ -1,5 +1,7 @@
 package com.informatorio.finalproject.repository;
 
+import com.informatorio.finalproject.dto.VoteEmprendimientoResponse;
+import com.informatorio.finalproject.dto.VoteUserResponse;
 import com.informatorio.finalproject.entity.Emprendimiento;
 import com.informatorio.finalproject.entity.Tag;
 import com.informatorio.finalproject.entity.User;
@@ -21,4 +23,9 @@ public interface EmprendimientoRepository extends JpaRepository<Emprendimiento, 
     //void addTagExisted(Long emp_id, Long tag_id);
     @Query(value = "select * from emprendimiento_tag where fk_emprendimiento = ?1 and fk_tag = ?2", nativeQuery = true)
     Optional<Object> findRelationshipWithTag(Long emp_id, Long tag_id);
+    @Query(value = "SELECT v.id, u.id as UserId, u.first_name as firstName, u.last_name as lastName, v.create_at from votes v " +
+            "INNER JOIN users u " +
+            "ON u.id = v.user_id " +
+            "WHERE v.emprendimiento_id = ?1", nativeQuery = true)
+    List<VoteEmprendimientoResponse> findVoteOfEmprendimiento(Long id);
 }

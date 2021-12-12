@@ -1,5 +1,6 @@
 package com.informatorio.finalproject.service;
 
+import com.informatorio.finalproject.dto.VoteUserResponse;
 import com.informatorio.finalproject.entity.User;
 import com.informatorio.finalproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,11 @@ public class UserServiceImplementation implements UserService {
     @Override
     public Boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public List<VoteUserResponse> findVoteOfUser(Long id) {
+        return userRepository.findVoteOfUser(id);
     }
 
 

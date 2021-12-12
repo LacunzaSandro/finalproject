@@ -1,5 +1,6 @@
 package com.informatorio.finalproject.service;
 
+import com.informatorio.finalproject.dto.VoteEmprendimientoResponse;
 import com.informatorio.finalproject.entity.Emprendimiento;
 import com.informatorio.finalproject.entity.User;
 import com.informatorio.finalproject.repository.EmprendimientoRepository;
@@ -56,11 +57,11 @@ public class EmprendimientoServiceImplementation implements EmprendimientoServic
     public void deleteById(Long id) {
         emprendimientoRepository.deleteById(id);
     }
-    /*
-    @Override
-    public List<Emprendimiento> getByTag(String tag) {
-        return emprendimientoRepository.getByTag(tag);
-    }*/
+
+    //@Override
+    //public List<Emprendimiento> getByTag(String tag) {
+    //    return emprendimientoRepository.getByTag(tag);
+    //}
 
     @Override
     public List<Emprendimiento> getByPublished(Boolean published) {
@@ -85,5 +86,10 @@ public class EmprendimientoServiceImplementation implements EmprendimientoServic
     @Override
     public Boolean findRelationshipWithTag(Long emp_id, Long tag_id) {
         return emprendimientoRepository.findRelationshipWithTag(emp_id,tag_id).isPresent();
+    }
+
+    @Override
+    public List<VoteEmprendimientoResponse> findVoteOfEmprendimiento(Long id) {
+        return emprendimientoRepository.findVoteOfEmprendimiento(id);
     }
 }

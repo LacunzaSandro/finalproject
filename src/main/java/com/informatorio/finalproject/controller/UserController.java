@@ -1,6 +1,6 @@
 package com.informatorio.finalproject.controller;
 
-import com.informatorio.finalproject.entity.Emprendimiento;
+import com.informatorio.finalproject.dto.VoteUserResponse;
 import com.informatorio.finalproject.entity.User;
 import com.informatorio.finalproject.exception.EmailValidationException;
 import com.informatorio.finalproject.exception.RecordNotFoundException;
@@ -44,6 +44,12 @@ public class UserController {
         }
         return ResponseEntity.ok(oUser);
     }
+    //get all vote of an user
+    @GetMapping("/{id}/vote")
+    public ResponseEntity<?> getAllVoteOfAnUser(@PathVariable(value = "id") Long userId) {
+        List<VoteUserResponse> voteUser = userService.findVoteOfUser(userId);
+        return ResponseEntity.ok(voteUser);
+    }
     //update an user
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable(value = "id") Long userId) {
@@ -71,7 +77,7 @@ public class UserController {
                 .collect(Collectors.toList());
         return userList;
     }
-    @GetMapping("/user/matching")
+    @GetMapping("/matching")
     public List<User> getMatchingUsers(@RequestBody User user) {
         return userService.findAll(Example.of(user));
     }

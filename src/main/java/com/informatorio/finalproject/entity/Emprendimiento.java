@@ -46,6 +46,16 @@ public class Emprendimiento {
     @JsonIgnore
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private User owner;
+    @OneToMany(targetEntity = Vote.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "emprendimiento_id",referencedColumnName = "id")
+    private List<Vote> votes;
+    @JsonIgnore
+    @ManyToOne(optional = true)
+    @JoinColumn(name="event", nullable=true)
+    private Event event;
+
+
+
     public Long getId() {
         return id;
     }
@@ -147,5 +157,22 @@ public class Emprendimiento {
     public void addTags(Tag tag) {
         tags.add(tag);
         tag.getEmprendimientos().add(this);
+    }
+
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
+
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 }

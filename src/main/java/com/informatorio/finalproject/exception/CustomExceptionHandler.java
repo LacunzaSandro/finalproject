@@ -1,13 +1,15 @@
 package com.informatorio.finalproject.exception;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.SQLGrammarException;
+import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +23,23 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @SuppressWarnings({"unchecked","rawtypes"})
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
-public class CustomExceptionHandler extends ResponseEntityExceptionHandler
-{
+public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+
+    @ExceptionHandler(SQLGrammarException.class)
+    public final ResponseEntity<Object> handleAllExceptions(SQLGrammarException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse("Server Error", details);
-        return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        ErrorResponse error = new ErrorResponse("an error occurred while searching the database", details);
+        return new ResponseEntity(error, HttpStatus.CONFLICT);
     }
-
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public final ResponseEntity<Object> handleAllExceptions(DataIntegrityViolationException ex, WebRequest request) {
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse("One or more entities looking for do not exist", details);
+        return new ResponseEntity(error, HttpStatus.CONFLICT);
+    }
     @ExceptionHandler(EmailValidationException.class)
     public final ResponseEntity<Object> handleEmailDuplicateException(EmailValidationException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
@@ -54,7 +62,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler
         ErrorResponse error = new ErrorResponse("Error", details);
         return new ResponseEntity(error, HttpStatus.CONFLICT);
     }
-
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse("An error has occurred", details);
+        return new ResponseEntity(error, HttpStatus.CONFLICT);
+    }
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> details = new ArrayList<>();
@@ -64,4 +78,5 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler
         ErrorResponse error = new ErrorResponse("Validation Failed", details);
         return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
     }
+
 }

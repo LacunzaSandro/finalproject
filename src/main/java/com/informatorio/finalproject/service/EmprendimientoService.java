@@ -1,5 +1,6 @@
 package com.informatorio.finalproject.service;
 
+import com.informatorio.finalproject.dto.VoteEmprendimientoResponse;
 import com.informatorio.finalproject.entity.Emprendimiento;
 import com.informatorio.finalproject.entity.User;
 import org.springframework.data.domain.Example;
@@ -21,4 +22,5 @@ public interface EmprendimientoService {
     //Optional<Emprendimiento> addTagExisted(Long emp_id, Long tag_id);
     Optional<Emprendimiento> addTagExisting(Long emp_id, Long tag_id);
     Boolean findRelationshipWithTag(Long emp_id, Long tag_id);
+    List<VoteEmprendimientoResponse> findVoteOfEmprendimiento(Long id);
 }

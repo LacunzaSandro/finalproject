@@ -1,6 +1,6 @@
 package com.informatorio.finalproject.service;
 
-import com.informatorio.finalproject.entity.Emprendimiento;
+import com.informatorio.finalproject.dto.VoteUserResponse;
 import com.informatorio.finalproject.entity.User;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -18,4 +18,5 @@ public interface UserService {
      User save(User user);
      void deleteById(Long id);
      Boolean existsByEmail(String email);
+     List<VoteUserResponse> findVoteOfUser(Long id);
 }

@@ -1,6 +1,7 @@
 package com.informatorio.finalproject.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -49,7 +50,10 @@ public class User  {
     private String country;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", cascade = CascadeType.ALL)
     public List<Emprendimiento> emprendimientos = new ArrayList<>();
+    @OneToMany(targetEntity = Vote.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
 
+    private List<Vote> votes;
 
     public Long getId() {
         return id;
