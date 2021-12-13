@@ -1,3 +1,4 @@
+com\informatorio\finalproject\dto\UserLoginDto.class
 com\informatorio\finalproject\service\TagServiceImplementation.class
 com\informatorio\finalproject\repository\VoteRepository.class
 com\informatorio\finalproject\service\VoteServiceImplementation.class
@@ -9,6 +10,7 @@ com\informatorio\finalproject\controller\EventController.class
 com\informatorio\finalproject\dto\VoteCountResponse.class
 com\informatorio\finalproject\service\UserService.class
 com\informatorio\finalproject\entity\Event.class
+com\informatorio\finalproject\security\JWTAuthorizationFilter.class
 com\informatorio\finalproject\repository\TagRepository.class
 com\informatorio\finalproject\entity\Vote.class
 com\informatorio\finalproject\service\EmprendimientoServiceImplementation.class
@@ -28,6 +30,7 @@ com\informatorio\finalproject\service\TagService.class
 com\informatorio\finalproject\exception\ErrorResponse.class
 com\informatorio\finalproject\controller\EmprendimientoController.class
 com\informatorio\finalproject\entity\Tag.class
+com\informatorio\finalproject\FinalprojectApplication$WebSecurityConfig.class
 com\informatorio\finalproject\controller\VoteController.class
 com\informatorio\finalproject\repository\EmprendimientoRepository.class
 com\informatorio\finalproject\service\EmprendimientoService.class

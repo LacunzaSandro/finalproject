@@ -1,5 +1,6 @@
 package com.informatorio.finalproject.service;
 
+import com.informatorio.finalproject.dto.UserLoginDto;
 import com.informatorio.finalproject.dto.VoteUserResponse;
 import com.informatorio.finalproject.entity.User;
 import org.springframework.data.domain.Example;
@@ -19,4 +20,5 @@ public interface UserService {
      void deleteById(Long id);
      Boolean existsByEmail(String email);
      List<VoteUserResponse> findVoteOfUser(Long id);
+     Optional<User>  findUserByEmailAndPassword(String email, String pwd);
 }

@@ -1,5 +1,6 @@
 package com.informatorio.finalproject.service;
 
+import com.informatorio.finalproject.dto.UserLoginDto;
 import com.informatorio.finalproject.dto.VoteUserResponse;
 import com.informatorio.finalproject.entity.User;
 import com.informatorio.finalproject.repository.UserRepository;
@@ -63,6 +64,11 @@ public class UserServiceImplementation implements UserService {
     @Override
     public List<VoteUserResponse> findVoteOfUser(Long id) {
         return userRepository.findVoteOfUser(id);
+    }
+
+    @Override
+    public Optional<User> findUserByEmailAndPassword(String email, String pwd) {
+        return userRepository.findUserByEmailAndPassword(email, pwd);
     }
 
 

@@ -1,20 +1,27 @@
 package com.informatorio.finalproject.controller;
 
+import com.informatorio.finalproject.dto.UserLoginDto;
 import com.informatorio.finalproject.dto.VoteUserResponse;
 import com.informatorio.finalproject.entity.User;
 import com.informatorio.finalproject.exception.EmailValidationException;
 import com.informatorio.finalproject.exception.RecordNotFoundException;
+import com.informatorio.finalproject.exception.SimpleException;
 import com.informatorio.finalproject.service.UserService;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,7 +70,7 @@ public class UserController {
     //delete
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Long userId) {
-        if (!userService.findById(userId).isPresent()) {
+        if (userService.findById(userId).isEmpty()) {
             throw new RecordNotFoundException("Invalid user id : " + userId);
         }
         userService.deleteById(userId);
@@ -82,4 +89,38 @@ public class UserController {
         return userService.findAll(Example.of(user));
     }
 
+
+    //login
+    @PostMapping("login")
+    public ResponseEntity<?> login(@RequestBody User userLogin) {
+        Optional<User>  oUser = userService.findUserByEmailAndPassword(userLogin.getEmail(), userLogin.getPassword());
+        if (oUser.isEmpty()){
+            throw new SimpleException("Email or password is wrong");
+        }
+        String token = getJWTToken(oUser.get().getEmail());
+        UserLoginDto user = new UserLoginDto();
+        user.setFullName(oUser.get().getFirstName() + " " + oUser.get().getLastName());
+        user.setToken(token);
+        user.setEmail(oUser.get().getEmail());
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+
+    }
+    private String getJWTToken(String username) {
+        String secretKey = "mySecretKey";
+        List<GrantedAuthority> grantedAuthorities = AuthorityUtils
+                .commaSeparatedStringToAuthorityList("ROLE_USER");
+        String token = Jwts
+                .builder()
+                .setId("softtekJWT")
+                .setSubject(username)
+                .claim("authorities",
+                        grantedAuthorities.stream()
+                                .map(GrantedAuthority::getAuthority)
+                                .collect(Collectors.toList()))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 600000))
+                .signWith(SignatureAlgorithm.HS512,
+                        secretKey.getBytes()).compact();
+        return "Bearer " + token;
+    }
 }
