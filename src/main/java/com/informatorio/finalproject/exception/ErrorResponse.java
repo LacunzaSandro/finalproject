@@ -18,6 +18,9 @@ public class ErrorResponse
     //Specific errors in API request processing
     private List<String> details;
 
+    public ErrorResponse() {
+    }
+
     //Getter and setters
 
     public String getMessage() {

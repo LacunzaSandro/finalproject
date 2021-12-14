@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping
 public class VoteController {
     @Autowired
     private VoteServicie voteServicie;

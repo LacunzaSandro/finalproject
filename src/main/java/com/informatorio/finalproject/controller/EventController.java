@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping
 public class EventController {
     @Autowired
     private EmprendimientoService emprendimientoService;
@@ -83,6 +84,11 @@ public class EventController {
                 .stream(eventService.findAll().spliterator(),false)
                 .collect(Collectors.toList());
         return eventList;
+    }
+    //schedule for event closing date review
+    @Scheduled(cron = "0 3 22 * * ?")
+    public void tarea4() {
+        System.out.println("Tarea usando expresiones cron");
     }
 
 }

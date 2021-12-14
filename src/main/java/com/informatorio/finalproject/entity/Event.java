@@ -1,7 +1,5 @@
 package com.informatorio.finalproject.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.informatorio.finalproject.utils.LocalDateDeserializer;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -10,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
 @ToString
 @Entity
 @Table(name="events")

@@ -21,4 +21,5 @@ public interface UserService {
      Boolean existsByEmail(String email);
      List<VoteUserResponse> findVoteOfUser(Long id);
      Optional<User>  findUserByEmailAndPassword(String email, String pwd);
+     User findUserByEmail(String email);
 }

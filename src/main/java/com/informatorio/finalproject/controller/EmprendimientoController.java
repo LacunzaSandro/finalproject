@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -31,7 +33,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 public class EmprendimientoController {
     @Autowired
     private EmprendimientoService emprendimientoService;
@@ -42,15 +44,14 @@ public class EmprendimientoController {
     @Autowired
     private EventService eventService;
     // create emprendimiento
-    @PostMapping("/users/{id}/emprendimientos")
-    public ResponseEntity<?> crearEmprendimiento(
-            @PathVariable("id") Long id,
-            @RequestBody @Valid Emprendimiento emprendimiento) {
-        User user = userService.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+    @PostMapping("emprendimientos")
+    public ResponseEntity<?> crearEmprendimiento(@RequestBody @Valid Emprendimiento emprendimiento) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = principal.toString();
+        User user = userService.findUserByEmail(email);
         user.getEmprendimientos().add(emprendimiento);
         emprendimiento.setOwner(user);
-        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+        return new ResponseEntity(userService.save(user), HttpStatus.CREATED);
     }
     //relation entity emprendimiento with event
     @PostMapping("emprendimiento/{empId}/event/{eventId}")

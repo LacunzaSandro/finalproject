@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +27,15 @@ public class User  {
     @Column(length = 50, nullable = false)
     @NotBlank(message = "lastname must not be empty")
     private String lastName;
-    @Column(length = 150, nullable = false)
+    @Column(length = 150, nullable = false,  unique = true)
     @NotBlank(message = "email must not be empty")
 
     @Email(regexp = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", message = "email should be a valid email")
     private String email;
-    @Column(length = 30, nullable = false)
+    @Column(length = 20, nullable = false)
     @NotBlank(message = "password must not be empty")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Size(max = 20, min = 8, message = "password must be between 8 and 20 characters")
     private String password;
     @CreationTimestamp
     private LocalDate create_at;

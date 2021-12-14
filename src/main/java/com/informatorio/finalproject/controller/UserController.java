@@ -1,6 +1,7 @@
 package com.informatorio.finalproject.controller;
 
 import com.informatorio.finalproject.dto.UserLoginDto;
+import com.informatorio.finalproject.dto.UserUpdateDto;
 import com.informatorio.finalproject.dto.VoteUserResponse;
 import com.informatorio.finalproject.entity.User;
 import com.informatorio.finalproject.exception.EmailValidationException;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +29,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("users")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -45,7 +48,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<?> readUserById(@PathVariable(value = "id") Long userId) {
         Optional<User> oUser = userService.findById(userId);
-        if (!oUser.isPresent()){
+        if (oUser.isEmpty()){
             throw new RecordNotFoundException("Invalid user id : " + userId);
             //return ResponseEntity.notFound().build();
         }
@@ -59,9 +62,9 @@ public class UserController {
     }
     //update an user
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable(value = "id") Long userId) {
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateDto user, @PathVariable(value = "id") Long userId) {
         Optional<User> oUser = userService.findById(userId);
-        if (!oUser.isPresent()){
+        if (oUser.isEmpty()){
             throw new RecordNotFoundException("Invalid user id : " + userId);
         }
         BeanUtils.copyProperties(user,oUser.get(),"id");
@@ -91,6 +94,7 @@ public class UserController {
 
 
     //login
+    @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST } )
     @PostMapping("login")
     public ResponseEntity<?> login(@RequestBody User userLogin) {
         Optional<User>  oUser = userService.findUserByEmailAndPassword(userLogin.getEmail(), userLogin.getPassword());
@@ -99,9 +103,8 @@ public class UserController {
         }
         String token = getJWTToken(oUser.get().getEmail());
         UserLoginDto user = new UserLoginDto();
-        user.setFullName(oUser.get().getFirstName() + " " + oUser.get().getLastName());
+        user.addUser(oUser.get().getFirstName() + " " + oUser.get().getLastName(), oUser.get().getEmail());
         user.setToken(token);
-        user.setEmail(oUser.get().getEmail());
         return ResponseEntity.status(HttpStatus.OK).body(user);
 
     }
@@ -118,9 +121,10 @@ public class UserController {
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 600000))
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(SignatureAlgorithm.HS512,
                         secretKey.getBytes()).compact();
-        return "Bearer " + token;
+        return token;
     }
+
 }
