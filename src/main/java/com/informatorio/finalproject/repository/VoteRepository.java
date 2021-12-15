@@ -21,8 +21,8 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
 
     @Query(value = "SELECT v.id, e.id as emprendimientoId, e.name as emprendimientoName, u.id as userId, CONCAT(u.first_name, ' ',u.last_name) as fullName, e.create_at " +
             "FROM votes v " +
-            "INNER JOIN emprendimientos e" +
-            " ON e.id = v.emprendimiento_id " +
+            "INNER JOIN emprendimientos e " +
+            "ON e.id = v.emprendimiento_id " +
             "INNER JOIN users u " +
             "ON u.id = v.user_id"
             , nativeQuery = true)
