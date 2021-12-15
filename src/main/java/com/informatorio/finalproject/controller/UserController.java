@@ -8,24 +8,18 @@ import com.informatorio.finalproject.exception.EmailValidationException;
 import com.informatorio.finalproject.exception.RecordNotFoundException;
 import com.informatorio.finalproject.exception.SimpleException;
 import com.informatorio.finalproject.service.UserService;
-
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
 
-
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -36,8 +30,12 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping("users")
 public class UserController {
+
+    private final UserService userService;
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     //create a new user
     @PostMapping

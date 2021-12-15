@@ -16,7 +16,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,14 +24,21 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping
 public class EventController {
+
+    private final EmprendimientoService emprendimientoService;
+    private final UserService userService;
+    private final EventService eventService;
+    private final VoteServicie voteServicie;
     @Autowired
-    private EmprendimientoService emprendimientoService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private EventService eventService;
-    @Autowired
-    private VoteServicie voteServicie;
+    public EventController(EmprendimientoService emprendimientoService,
+                           UserService userService,
+                           EventService eventService,
+                           VoteServicie voteServicie) {
+        this.emprendimientoService = emprendimientoService;
+        this.userService = userService;
+        this.eventService = eventService;
+        this.voteServicie = voteServicie;
+    }
 
     //create event
     @PostMapping("event")
@@ -44,7 +50,7 @@ public class EventController {
                                          @RequestParam Long empId) {
         Optional<Emprendimiento> oEmp = emprendimientoService.findById(empId);
         Optional<Event> oEvent = eventService.findById(eventId);
-        if (!oEmp.isPresent() || !oEvent.isPresent()){
+        if (oEmp.isEmpty() || oEvent.isEmpty()){
             throw new RecordNotFoundException("Record not found");
         }
         oEvent.get().getEmprendimientos().add(oEmp.get());
@@ -55,7 +61,7 @@ public class EventController {
     public ResponseEntity<?> updateEvent(@PathVariable(value = "id") Long eventId,
                                          @Valid @RequestBody EventDto event) {
         Optional<Event> oEvent = eventService.findById(eventId);
-        if (!oEvent.isPresent()){
+        if (oEvent.isEmpty()){
             throw new RecordNotFoundException("Invalid event id : " + eventId);
         }
         BeanUtils.copyProperties(event,oEvent.get());
@@ -75,7 +81,7 @@ public class EventController {
     @GetMapping("event/{id}")
     public ResponseEntity<?> getEventById(@PathVariable  Long id) {
         Optional<Event> oEvent = eventService.findById(id);
-        if (!oEvent.isPresent()){
+        if (oEvent.isEmpty()){
             throw new RecordNotFoundException("Invalid event id : " + id);
         }
         return ResponseEntity.status(HttpStatus.OK).body(oEvent);
@@ -89,7 +95,6 @@ public class EventController {
     }
     @GetMapping("event/{id}/ranking")
     public ResponseEntity<?> getRankingOfEvent(@PathVariable  Long id) {
-        System.out.println("-------------------------" + id);
         return ResponseEntity.ok(voteServicie.getRankingVotesOnEvent(id));
     }
     //schedule for event closing date review

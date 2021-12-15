@@ -6,11 +6,11 @@ import com.informatorio.finalproject.dto.VoteEmprendimientoResponse;
 import com.informatorio.finalproject.entity.Emprendimiento;
 import com.informatorio.finalproject.entity.Event;
 import com.informatorio.finalproject.entity.User;
+import com.informatorio.finalproject.exception.RecordNotFoundException;
 import com.informatorio.finalproject.exception.SimpleException;
 import com.informatorio.finalproject.service.EmprendimientoService;
 import com.informatorio.finalproject.service.EventService;
 import com.informatorio.finalproject.service.UserService;
-import com.informatorio.finalproject.exception.RecordNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -20,9 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,12 +28,16 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping
 public class EmprendimientoController {
+    private final EmprendimientoService emprendimientoService;
+    private final UserService userService;
+    private final EventService eventService;
     @Autowired
-    private EmprendimientoService emprendimientoService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private EventService eventService;
+    public EmprendimientoController(EmprendimientoService emprendimientoService, UserService userService, EventService eventService) {
+        this.emprendimientoService = emprendimientoService;
+        this.userService = userService;
+        this.eventService = eventService;
+    }
+
     // create emprendimiento
     @PostMapping("emprendimientos")
     public ResponseEntity<?> crearEmprendimiento(@RequestBody @Valid EmprendimientoDto emp) {

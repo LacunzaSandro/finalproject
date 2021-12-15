@@ -21,12 +21,15 @@ import java.util.Optional;
 @RestController
 @RequestMapping
 public class VoteController {
+    private final VoteServicie voteServicie;
+    private final EmprendimientoService emprendimientoService;
+    private final UserService userService;
     @Autowired
-    private VoteServicie voteServicie;
-    @Autowired
-    private EmprendimientoService emprendimientoService;
-    @Autowired
-    private UserService userService;
+    public VoteController(VoteServicie voteServicie, EmprendimientoService emprendimientoService, UserService userService) {
+        this.voteServicie = voteServicie;
+        this.emprendimientoService = emprendimientoService;
+        this.userService = userService;
+    }
 
     @PostMapping("vote")
     public ResponseEntity<?> createVote(@Valid @RequestBody Vote vote) {

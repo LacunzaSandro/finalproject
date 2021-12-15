@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\":\"Bart\",\r\n    \"lastName\": \"Simpsons\",\r\n    \"email\":\"simpsons3@gmail.com\",\r\n    \"password\":\"unodos34\",\r\n    \"type\":\"USUARIO\",\r\n    \"city\":\"Fontana\",\r\n    \"province\":\"Chaco\",\r\n    \"country\":\"Argentina\"\r\n}",
+							"raw": "{\r\n    \"firstName\":\"Ned\",\r\n    \"lastName\": \"Flanders\",\r\n    \"email\":\"nedy@gmail.com\",\r\n    \"password\":\"unodos34\",\r\n    \"type\":\"USUARIO\",\r\n    \"city\":\"Fontana\",\r\n    \"province\":\"Chaco\",\r\n    \"country\":\"Argentina\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -41,9 +41,15 @@
 					"name": "get user by id",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url}}:{{port}}/api/v1/users/1",
+							"raw": "{{url}}:{{port}}/api/v1/users/3",
 							"host": [
 								"{{url}}"
 							],
@@ -52,7 +58,7 @@
 								"api",
 								"v1",
 								"users",
-								"1"
+								"3"
 							]
 						}
 					},
@@ -105,7 +111,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\":\"Maggi\",\r\n    \"lastName\": \"Simpsons\",\r\n    \"password\":\"Unodos34!\",\r\n    \"type\":\"USUARIO\",\r\n    \"city\":\"Fontana\",\r\n    \"province\":\"Chaco\",\r\n    \"country\":\"Argentina\"\r\n}",
+							"raw": "{\r\n    \"firstName\":\"Bart\",\r\n    \"lastName\": \"Simpsons\",\r\n    \"password\":\"Unodos34!\",\r\n    \"type\":\"USUARIO\",\r\n    \"city\":\"Resistencia\",\r\n    \"province\":\"Chaco\",\r\n    \"country\":\"Argentina\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -210,7 +216,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"simpsons1@gmail.com\",\r\n    \"password\":\"unodos34\"\r\n}",
+							"raw": "{\r\n    \"email\":\"nedy@gmail.com\",\r\n    \"password\":\"unodos34\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -254,7 +260,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}:{{port}}/api/v1/users/search?city=resistencia",
+							"raw": "{{url}}:{{port}}/api/v1/users/search?city=fontana",
 							"host": [
 								"{{url}}"
 							],
@@ -268,7 +274,7 @@
 							"query": [
 								{
 									"key": "city",
-									"value": "resistencia"
+									"value": "fontana"
 								}
 							]
 						}
@@ -335,7 +341,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Pizzas pre-cocidas\",\r\n    \"description\":\"\",\r\n    \"content\":\"Este es el contenido\",\r\n    \"target\":10000,\r\n    \"published\": false,\r\n    \"snapshot\":\"\",\r\n    \"tags\": \"perro,gato\",\r\n    \"active\":false\r\n}",
+							"raw": "{\r\n    \"name\":\"Casa de zurdos\",\r\n    \"description\":\"Todos los objetos para zurdos\",\r\n    \"content\":\"Aqui encontraras todo lo que necesita un zurdo para ser feliz\",\r\n    \"target\":10000,\r\n    \"published\": true,\r\n    \"snapshot\":\"http://casadezurdos.com\",\r\n    \"tags\": \"vaso,campera\",\r\n    \"active\":true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -442,7 +448,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"emp\",\r\n    \"description\":\"description emp\",\r\n    \"content\":\"Este es el contenido\",\r\n    \"target\":10000,\r\n    \"published\": false,\r\n    \"snapshot\":\"\",\r\n    \"tag\": \"foto\",\r\n    \"active\":false\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -497,7 +503,13 @@
 					"name": "get  emprendimientos by id",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{url}}:{{port}}/api/v1/emprendimiento/1",
 							"host": [
@@ -526,7 +538,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}:{{port}}/api/v1/emprendimiento/search?published=false",
+							"raw": "{{url}}:{{port}}/api/v1/emprendimiento/search?published=true",
 							"host": [
 								"{{url}}"
 							],
@@ -540,7 +552,7 @@
 							"query": [
 								{
 									"key": "published",
-									"value": "false"
+									"value": "true"
 								}
 							]
 						}
@@ -598,7 +610,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}:{{port}}/api/v1/emprendimiento?tag=gato",
+							"raw": "{{url}}:{{port}}/api/v1/emprendimiento?tag=vaso",
 							"host": [
 								"{{url}}"
 							],
@@ -611,7 +623,7 @@
 							"query": [
 								{
 									"key": "tag",
-									"value": "gato"
+									"value": "vaso"
 								}
 							]
 						}
@@ -677,7 +689,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}:{{port}}/api/v1/users/1/vote",
+							"raw": "{{url}}:{{port}}/api/v1/emprendimiento/1/vote",
 							"host": [
 								"{{url}}"
 							],
@@ -685,7 +697,7 @@
 							"path": [
 								"api",
 								"v1",
-								"users",
+								"emprendimiento",
 								"1",
 								"vote"
 							]
@@ -705,7 +717,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}:{{port}}/api/v1/users/1/vote",
+							"raw": "{{url}}:{{port}}/api/v1/users/4/vote",
 							"host": [
 								"{{url}}"
 							],
@@ -714,7 +726,7 @@
 								"api",
 								"v1",
 								"users",
-								"1",
+								"4",
 								"vote"
 							]
 						}
@@ -742,42 +754,6 @@
 								"api",
 								"v1",
 								"vote"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Tag",
-			"item": [
-				{
-					"name": "add tag to emprendimiento",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"text\":\"foto\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}:{{port}}/api/v1/emprendimiento/1/tag",
-							"host": [
-								"{{url}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"api",
-								"v1",
-								"emprendimiento",
-								"1",
-								"tag"
 							]
 						}
 					},

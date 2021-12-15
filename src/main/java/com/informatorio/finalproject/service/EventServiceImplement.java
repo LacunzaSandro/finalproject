@@ -12,8 +12,12 @@ import java.util.Optional;
 
 @Service
 public class EventServiceImplement implements EventService{
-    @Autowired
+
     private EventRepository eventRepository;
+    @Autowired
+    public EventServiceImplement(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
 
     @Override
     public Iterable<Event> findAll() {

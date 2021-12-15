@@ -1,17 +1,8 @@
 package com.informatorio.finalproject.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.informatorio.finalproject.entity.Event;
-import com.informatorio.finalproject.entity.User;
-import com.informatorio.finalproject.entity.Vote;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.util.ReflectionUtils;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

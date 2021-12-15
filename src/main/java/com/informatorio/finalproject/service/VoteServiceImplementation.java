@@ -14,8 +14,13 @@ import java.util.Optional;
 
 @Service
 public class VoteServiceImplementation implements VoteServicie {
+
+    private final VoteRepository voteRepository;
     @Autowired
-    private VoteRepository voteRepository;
+    public VoteServiceImplementation(VoteRepository voteRepository) {
+        this.voteRepository = voteRepository;
+    }
+
     @Override
     public Iterable<Vote> findAll() {
         return voteRepository.findAll();

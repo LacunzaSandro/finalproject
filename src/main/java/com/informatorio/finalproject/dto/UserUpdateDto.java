@@ -1,13 +1,11 @@
 package com.informatorio.finalproject.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.informatorio.finalproject.entity.UserEnum;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 public class UserUpdateDto {
     @NotBlank(message = "name must not be empty")

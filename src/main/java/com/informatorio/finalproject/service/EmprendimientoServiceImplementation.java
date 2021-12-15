@@ -2,9 +2,7 @@ package com.informatorio.finalproject.service;
 
 import com.informatorio.finalproject.dto.VoteEmprendimientoResponse;
 import com.informatorio.finalproject.entity.Emprendimiento;
-import com.informatorio.finalproject.entity.User;
 import com.informatorio.finalproject.repository.EmprendimientoRepository;
-import com.informatorio.finalproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -12,15 +10,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 @Service
 public class EmprendimientoServiceImplementation implements EmprendimientoService {
-    @Autowired
+
     private EmprendimientoRepository emprendimientoRepository;
+    @Autowired
+    public EmprendimientoServiceImplementation(EmprendimientoRepository emprendimientoRepository) {
+        this.emprendimientoRepository = emprendimientoRepository;
+    }
 
     @Override
     @Transactional(readOnly = true)
