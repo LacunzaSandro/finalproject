@@ -11,6 +11,7 @@ import com.informatorio.finalproject.service.VoteServicie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,18 +30,26 @@ public class VoteController {
 
     @PostMapping("vote")
     public ResponseEntity<?> createVote(@Valid @RequestBody Vote vote) {
+        //recover authenticate user
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = principal.toString();
+        User user = userService.findUserByEmail(email);
+        //user authenticate vote an emprendimiento. This emprendimiento must be added to an event
         Optional<Emprendimiento> oEmp = emprendimientoService.findById(vote.getEmprendimiento_id());
-        Optional<User> oUser = userService.findById(vote.getUser_id());
-        if (oEmp.isEmpty() || oUser.isEmpty()) {
-            throw new RecordNotFoundException("Record not Found");
+        if (voteServicie.findVote(user.getId(),oEmp.get().getId()).isPresent()) {
+            throw new SimpleException("Only can vote once");
+        }
+        if (oEmp.isEmpty()) {
+            throw new RecordNotFoundException("Emprendimiento not found");
         } else if (Objects.isNull(oEmp.get().getEvent())) {
             throw new SimpleException("This Emprendimiento does not have an added event");
         }
+        vote.setUser_id(user.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(voteServicie.save(vote));
     }
 
     @GetMapping("vote")
     public ResponseEntity<?> getAllVote() {
-        return ResponseEntity.ok(voteServicie.findAll());
+        return ResponseEntity.ok(voteServicie.findAllVotes());
     }
 }

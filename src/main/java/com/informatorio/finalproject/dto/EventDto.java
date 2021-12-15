@@ -5,24 +5,29 @@ import com.informatorio.finalproject.entity.EventEnum;
 import org.hibernate.annotations.CreationTimestamp;
 
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class EventDto {
-
+    @NotBlank(message = "details must not be empty")
     private String details;
-    private LocalDate finish_at;
+    @NotNull(message = "details must not be empty")
+    private LocalDateTime finish_at;
+    @NotNull(message = "details must not be empty")
     private EventEnum state;
-    private List<Emprendimiento> emprendimientos;
+    @NotNull(message = "details must not be empty")
+    private Integer award;
 
     public EventDto() {
     }
 
-    public EventDto(String details, LocalDate finish_at, EventEnum state, List<Emprendimiento> emprendimientos) {
+    public EventDto(String details, LocalDateTime finish_at, EventEnum state) {
         this.details = details;
         this.finish_at = finish_at;
         this.state = state;
-        this.emprendimientos = emprendimientos;
     }
 
     public String getDetails() {
@@ -33,11 +38,11 @@ public class EventDto {
         this.details = details;
     }
 
-    public LocalDate getFinish_at() {
+    public LocalDateTime getFinish_at() {
         return finish_at;
     }
 
-    public void setFinish_at(LocalDate finish_at) {
+    public void setFinish_at(LocalDateTime finish_at) {
         this.finish_at = finish_at;
     }
 
@@ -49,11 +54,11 @@ public class EventDto {
         this.state = state;
     }
 
-    public List<Emprendimiento> getEmprendimientos() {
-        return emprendimientos;
+    public Integer getAward() {
+        return award;
     }
 
-    public void setEmprendimientos(List<Emprendimiento> emprendimientos) {
-        this.emprendimientos = emprendimientos;
+    public void setAward(Integer award) {
+        this.award = award;
     }
 }

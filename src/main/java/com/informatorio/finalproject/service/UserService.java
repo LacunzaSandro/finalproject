@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,4 +24,5 @@ public interface UserService {
      List<VoteUserResponse> findVoteOfUser(Long id);
      Optional<User>  findUserByEmailAndPassword(String email, String pwd);
      User findUserByEmail(String email);
+     List<User> findByCreateAtBefore(LocalDate date);
 }

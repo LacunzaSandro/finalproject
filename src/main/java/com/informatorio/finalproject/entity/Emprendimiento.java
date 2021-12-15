@@ -3,11 +3,13 @@ package com.informatorio.finalproject.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.util.ReflectionUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,35 +27,24 @@ public class Emprendimiento {
     private String description;
     private String content;
     @CreationTimestamp
-    private LocalDate create_at;
+    private LocalDateTime create_at;
     @UpdateTimestamp
-    private LocalDate update_at;
+    private LocalDateTime update_at;
     private Long target;
     private boolean published;
     private String snapshot;
-    @JoinTable(
-            name = "emprendimiento_tag",
-            joinColumns = @JoinColumn(name = "FK_EMPRENDIMIENTO", nullable = false),
-            inverseJoinColumns = @JoinColumn(name="FK_TAG", nullable = false)
-    )
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    }, fetch = FetchType.EAGER)
-    private List<Tag> tags = new ArrayList<>();
+    private String tags;
     @NotNull(message = "active must not be empty")
     private boolean active;
     @JsonIgnore
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private User owner;
     @OneToMany(targetEntity = Vote.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "emprendimiento_id",referencedColumnName = "id")
+    @JoinColumn(name = "emprendimiento_id", referencedColumnName = "id")
     private List<Vote> votes;
     @JsonIgnore
     @ManyToOne(optional = true)
-    @JoinColumn(name="event", nullable=true)
     private Event event;
-
 
 
     public Long getId() {
@@ -88,19 +79,19 @@ public class Emprendimiento {
         this.content = content;
     }
 
-    public LocalDate getCreate_at() {
+    public LocalDateTime getCreate_at() {
         return create_at;
     }
 
-    public void setCreate_at(LocalDate create_at) {
+    public void setCreate_at(LocalDateTime create_at) {
         this.create_at = create_at;
     }
 
-    public LocalDate getUpdate_at() {
+    public LocalDateTime getUpdate_at() {
         return update_at;
     }
 
-    public void setUpdate_at(LocalDate update_at) {
+    public void setUpdate_at(LocalDateTime update_at) {
         this.update_at = update_at;
     }
 
@@ -129,7 +120,6 @@ public class Emprendimiento {
     }
 
 
-
     public boolean isActive() {
         return active;
     }
@@ -147,18 +137,6 @@ public class Emprendimiento {
     }
 
 
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
-    public void addTags(Tag tag) {
-        tags.add(tag);
-        tag.getEmprendimientos().add(this);
-    }
-
     public List<Vote> getVotes() {
         return votes;
     }
@@ -175,4 +153,14 @@ public class Emprendimiento {
     public void setEvent(Event event) {
         this.event = event;
     }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
 }
+

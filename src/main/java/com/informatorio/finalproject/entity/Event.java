@@ -2,8 +2,10 @@ package com.informatorio.finalproject.entity;
 
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,17 +18,22 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "the event must have any description")
     private String details;
     @CreationTimestamp
     private LocalDate create_at;
+    @UpdateTimestamp
+    private LocalDate update_at;
+
     private LocalDate finish_at;
     @NotNull
     @Enumerated(value = EnumType.STRING)
     private EventEnum state;
-    @OneToMany(targetEntity=Emprendimiento.class, cascade= { CascadeType.MERGE, CascadeType.PERSIST },
-            mappedBy="event")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
+    @JoinColumn(name = "event_id", referencedColumnName = "id", nullable = true)
     private List<Emprendimiento> emprendimientos = new ArrayList();
-
+    @NotNull(message = "reward must not be empty")
+    private Integer award;
 
     public Event() {
     }
@@ -86,5 +93,21 @@ public class Event {
 
     public void setEmprendimientos(List<Emprendimiento> emprendimientos) {
         this.emprendimientos = emprendimientos;
+    }
+
+    public Integer getAward() {
+        return award;
+    }
+
+    public void setAward(Integer award) {
+        this.award = award;
+    }
+
+    public LocalDate getUpdate_at() {
+        return update_at;
+    }
+
+    public void setUpdate_at(LocalDate update_at) {
+        this.update_at = update_at;
     }
 }

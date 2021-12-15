@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +38,9 @@ public class User  {
     @Size(max = 20, min = 8, message = "password must be between 8 and 20 characters")
     private String password;
     @CreationTimestamp
-    private LocalDate create_at;
+    private LocalDateTime create_at;
     @UpdateTimestamp
-    private LocalDate update_at;
+    private LocalDateTime update_at;
     @NotNull
     @Enumerated(value = EnumType.STRING)
     private UserEnum type;
@@ -50,7 +50,7 @@ public class User  {
     private String province;
     @NotBlank(message = "country must not be empty")
     private String country;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", cascade = {CascadeType.ALL})
     public List<Emprendimiento> emprendimientos = new ArrayList<>();
     @OneToMany(targetEntity = Vote.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
@@ -97,19 +97,19 @@ public class User  {
         this.password = password;
     }
 
-    public LocalDate getCreate_at() {
+    public LocalDateTime getCreate_at() {
         return create_at;
     }
 
-    public void setCreate_at(LocalDate create_at) {
+    public void setCreate_at(LocalDateTime create_at) {
         this.create_at = create_at;
     }
 
-    public LocalDate getUpdate_at() {
+    public LocalDateTime getUpdate_at() {
         return update_at;
     }
 
-    public void setUpdate_at(LocalDate update_at) {
+    public void setUpdate_at(LocalDateTime update_at) {
         this.update_at = update_at;
     }
 

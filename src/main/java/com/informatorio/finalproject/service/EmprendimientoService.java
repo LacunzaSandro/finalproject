@@ -6,6 +6,7 @@ import com.informatorio.finalproject.entity.User;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +18,7 @@ public interface EmprendimientoService {
     List<Emprendimiento> findAll(Example<Emprendimiento> ex);
     Emprendimiento save(Emprendimiento emp);
     void deleteById(Long id);
-    //List<Emprendimiento> getByTag(String tag);
+    List<Emprendimiento> getEmprendimientoByTagLike(String tag);
     List<Emprendimiento> getByPublished(Boolean published);
-    //Optional<Emprendimiento> addTagExisted(Long emp_id, Long tag_id);
-    Optional<Emprendimiento> addTagExisting(Long emp_id, Long tag_id);
-    Boolean findRelationshipWithTag(Long emp_id, Long tag_id);
     List<VoteEmprendimientoResponse> findVoteOfEmprendimiento(Long id);
 }

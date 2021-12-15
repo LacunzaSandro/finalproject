@@ -1,7 +1,6 @@
 package com.informatorio.finalproject.service;
 
 import com.informatorio.finalproject.entity.Event;
-import com.informatorio.finalproject.entity.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

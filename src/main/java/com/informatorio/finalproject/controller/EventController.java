@@ -3,13 +3,11 @@ package com.informatorio.finalproject.controller;
 import com.informatorio.finalproject.dto.EventDto;
 import com.informatorio.finalproject.entity.Emprendimiento;
 import com.informatorio.finalproject.entity.Event;
-import com.informatorio.finalproject.entity.User;
 import com.informatorio.finalproject.exception.RecordNotFoundException;
 import com.informatorio.finalproject.service.EmprendimientoService;
 import com.informatorio.finalproject.service.EventService;
-import com.informatorio.finalproject.service.TagService;
 import com.informatorio.finalproject.service.UserService;
-import lombok.ToString;
+import com.informatorio.finalproject.service.VoteServicie;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,14 +30,13 @@ public class EventController {
     @Autowired
     private UserService userService;
     @Autowired
-    private TagService tagService;
-    @Autowired
     private EventService eventService;
+    @Autowired
+    private VoteServicie voteServicie;
 
     //create event
     @PostMapping("event")
-    public ResponseEntity<?> createEvent(@RequestBody Event event) {
-        System.out.println(eventService.save(event));
+    public ResponseEntity<?> createEvent(@Valid @RequestBody Event event) {
         return ResponseEntity.ok(eventService.save(event));
     }
     @PostMapping("event/{eventId}/emprendimiento/{empId}")
@@ -54,20 +52,24 @@ public class EventController {
     }
     //update event
     @PutMapping("event/{id}")
-    public ResponseEntity<?> updateEvent(@RequestParam(value = "id") Long eventId, @RequestBody Event event) {
+    public ResponseEntity<?> updateEvent(@PathVariable(value = "id") Long eventId,
+                                         @Valid @RequestBody EventDto event) {
         Optional<Event> oEvent = eventService.findById(eventId);
         if (!oEvent.isPresent()){
             throw new RecordNotFoundException("Invalid event id : " + eventId);
         }
-        BeanUtils.copyProperties(event,oEvent.get(),"id","create_at");
+        BeanUtils.copyProperties(event,oEvent.get());
         return ResponseEntity.status(HttpStatus.CREATED).body(eventService.save(oEvent.get()));
     }
     @DeleteMapping("event/{id}")
-    public ResponseEntity<?> deleteEvent(@RequestParam(value = "id") Long eventId) {
-        if (!userService.findById(eventId).isPresent()) {
+    public ResponseEntity<?> deleteEvent(@PathVariable(value = "id") Long eventId) {
+        Optional<Event> event = eventService.findById(eventId);
+        if (event.isEmpty()) {
             throw new RecordNotFoundException("Invalid user id : " + eventId);
         }
-        userService.deleteById(eventId);
+        event.get().getEmprendimientos().removeAll(event.get().getEmprendimientos());
+        eventService.save(event.get());
+        eventService.deleteById(eventId);
         return ResponseEntity.ok().build();
     }
     @GetMapping("event/{id}")
@@ -84,6 +86,10 @@ public class EventController {
                 .stream(eventService.findAll().spliterator(),false)
                 .collect(Collectors.toList());
         return eventList;
+    }
+    @GetMapping("event/{id}/ranking")
+    public ResponseEntity<?> getRankingOfEvent(@PathVariable  Long id) {
+        return ResponseEntity.ok(voteServicie.getRankingVotesOnEvent(id));
     }
     //schedule for event closing date review
     @Scheduled(cron = "0 3 22 * * ?")

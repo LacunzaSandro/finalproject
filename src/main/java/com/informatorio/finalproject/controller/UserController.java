@@ -16,13 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +52,6 @@ public class UserController {
         Optional<User> oUser = userService.findById(userId);
         if (oUser.isEmpty()){
             throw new RecordNotFoundException("Invalid user id : " + userId);
-            //return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(oUser);
     }
@@ -87,11 +88,16 @@ public class UserController {
                 .collect(Collectors.toList());
         return userList;
     }
+    //find user by body request
     @GetMapping("/matching")
     public List<User> getMatchingUsers(@RequestBody User user) {
         return userService.findAll(Example.of(user));
     }
-
+    //filter by date of user create.
+    @PostMapping("search")
+    public List<User> searchByDateCreate(@RequestParam(required = false, defaultValue = "") @NotEmpty String create) {
+        return userService.findByCreateAtBefore(LocalDate.parse(create));
+    }
 
     //login
     @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST } )

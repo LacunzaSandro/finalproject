@@ -1,12 +1,12 @@
 package com.informatorio.finalproject.service;
 
 import com.informatorio.finalproject.entity.Event;
-import com.informatorio.finalproject.entity.Tag;
 import com.informatorio.finalproject.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -31,6 +31,7 @@ public class EventServiceImplement implements EventService{
     }
 
     @Override
+    @Transactional
     public Event save(Event event) {
         return eventRepository.save(event);
     }

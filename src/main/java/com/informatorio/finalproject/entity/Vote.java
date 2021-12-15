@@ -6,7 +6,6 @@ import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -19,7 +18,7 @@ public class Vote {
     private Long emprendimiento_id;
     private Long user_id;
     @CreationTimestamp
-    private LocalDate create_at;
+    private LocalDateTime create_at;
 
 
     @Override
@@ -59,11 +58,11 @@ public class Vote {
         this.user_id = user_id;
     }
 
-    public LocalDate getCreate_at() {
+    public LocalDateTime getCreate_at() {
         return create_at;
     }
 
-    public void setCreate_at(LocalDate create_at) {
+    public void setCreate_at(LocalDateTime create_at) {
         this.create_at = create_at;
     }
 }
