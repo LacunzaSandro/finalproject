@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public interface EmprendimientoService {
     Iterable<Emprendimiento> findAll();
+    Iterable<Emprendimiento> findAll(String tag, String published);
     Page<Emprendimiento> findAll(Pageable pageable);
     Optional<Emprendimiento> findById(Long id);
     List<Emprendimiento> findAll(Example<Emprendimiento> ex);

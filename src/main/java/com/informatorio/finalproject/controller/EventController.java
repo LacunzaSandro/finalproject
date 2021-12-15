@@ -89,6 +89,7 @@ public class EventController {
     }
     @GetMapping("event/{id}/ranking")
     public ResponseEntity<?> getRankingOfEvent(@PathVariable  Long id) {
+        System.out.println("-------------------------" + id);
         return ResponseEntity.ok(voteServicie.getRankingVotesOnEvent(id));
     }
     //schedule for event closing date review

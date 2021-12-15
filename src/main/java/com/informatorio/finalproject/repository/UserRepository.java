@@ -28,4 +28,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "FROM users u " +
             "WHERE u.create_at >= ?1", nativeQuery = true)
     List<User> findByCreateAtBefore(LocalDate date);
+    List<User> findByCity(String city);
 }

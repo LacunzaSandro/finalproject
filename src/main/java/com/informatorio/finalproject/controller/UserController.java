@@ -14,6 +14,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -93,10 +94,14 @@ public class UserController {
     public List<User> getMatchingUsers(@RequestBody User user) {
         return userService.findAll(Example.of(user));
     }
-    //filter by date of user create.
+    //filter by date of user create or city.
     @PostMapping("search")
-    public List<User> searchByDateCreate(@RequestParam(required = false, defaultValue = "") @NotEmpty String create) {
-        return userService.findByCreateAtBefore(LocalDate.parse(create));
+    public List<User> searchByDateCreate(@RequestParam( required = false) String create,
+                                         @RequestParam( required = false) String city) {
+        List<User> listUser = StreamSupport
+                .stream(userService.findAll(create, city).spliterator(),false)
+                .collect(Collectors.toList());;
+        return listUser;
     }
 
     //login

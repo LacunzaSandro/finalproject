@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
+     Iterable<User> findAll(String date, String city);
      Iterable<User> findAll();
      Page<User> findAll(Pageable pageable);
      Optional<User> findById(Long id);
@@ -24,5 +25,6 @@ public interface UserService {
      List<VoteUserResponse> findVoteOfUser(Long id);
      Optional<User>  findUserByEmailAndPassword(String email, String pwd);
      User findUserByEmail(String email);
-     List<User> findByCreateAtBefore(LocalDate date);
+     Iterable<User> findByCreateAtBefore(LocalDate date);
+     Iterable<User> findByCity(String city);
 }

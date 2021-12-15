@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -24,6 +25,16 @@ public class EmprendimientoServiceImplementation implements EmprendimientoServic
     @Override
     @Transactional(readOnly = true)
     public Iterable<Emprendimiento> findAll() {
+        return emprendimientoRepository.findAll();
+    }
+
+    @Override
+    public Iterable<Emprendimiento> findAll(String tag, String published) {
+        if (tag != null) {
+            return emprendimientoRepository.getEmprendimientoByTagLike(tag);
+        } else if (published != null) {
+            return emprendimientoRepository.getByPublished(Boolean.parseBoolean(published));
+        }
         return emprendimientoRepository.findAll();
     }
 

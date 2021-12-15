@@ -28,11 +28,12 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
             , nativeQuery = true)
     List<VoteResponse> findAllVotes();
 
-    @Query(value = "SELECT  e.id, e.name, COUNT(e.name) as votes FROM `votes`as v" +
+    @Query(value = "SELECT  e.id, e.name, COUNT(e.name) as votes " +
+            "FROM `votes`as v " +
             "INNER JOIN emprendimientos as e" +
-            "ON v.emprendimiento_id = e.id" +
-            "WHERE e.event_id = ?1" +
-            "GROUP BY v.emprendimiento_id" +
+            " ON v.emprendimiento_id = e.id " +
+            "WHERE e.event_id = ?1 " +
+            "GROUP BY v.emprendimiento_id " +
             "ORDER BY COUNT(e.name) DESC;", nativeQuery = true)
     List<RankingResponse> getRankingVotesOnEvent(Long event_id);
 

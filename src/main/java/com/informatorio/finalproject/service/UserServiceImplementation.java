@@ -24,6 +24,18 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public Iterable<User> findAll(String date, String city) {
+        if (date != null) {
+            return userRepository.findByCreateAtBefore(LocalDate.parse(date));
+        } else if (city != null) {
+            return userRepository.findByCity(city);
+        } else {
+            return userRepository.findAll();
+        }
+
+    }
+
+    @Override
     public Iterable<User> findAll() {
         return userRepository.findAll();
     }
@@ -79,8 +91,13 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public List<User> findByCreateAtBefore(LocalDate date) {
+    public Iterable<User> findByCreateAtBefore(LocalDate date) {
         return userRepository.findByCreateAtBefore(date);
+    }
+
+    @Override
+    public Iterable<User> findByCity(String city) {
+        return userRepository.findByCity(city);
     }
 
 

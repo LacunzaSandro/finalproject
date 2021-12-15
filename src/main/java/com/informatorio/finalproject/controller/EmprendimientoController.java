@@ -120,6 +120,15 @@ public class EmprendimientoController {
     public List<Emprendimiento> filterEmpByStateActive(@RequestParam Boolean published) {
         return emprendimientoService.getByPublished(published);
     }
+    //filter by date of user create or city.
+    @PostMapping("emprendimiento/search")
+    public List<Emprendimiento> searchByDateCreate(@RequestParam( required = false) String tag,
+                                         @RequestParam(required = false) String published) {
+        List<Emprendimiento> listEmprendimiento = StreamSupport
+                .stream(emprendimientoService.findAll(tag, published).spliterator(),false)
+                .collect(Collectors.toList());;
+        return listEmprendimiento;
+    }
     //get user trough multiple params
 
     /**
